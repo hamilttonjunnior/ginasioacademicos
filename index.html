@@ -63,34 +63,18 @@
             <button onclick="logout()" class="text-xs text-zinc-500 hover:text-black font-medium underline">Sair</button>
           </div>
         </div>
-
-        <!-- NAVEGAÇÃO POR ABAS -->
-        <nav class="flex space-x-6 sm:space-x-8 overflow-x-auto no-scrollbar border-t border-zinc-100 pt-2">
-          <button onclick="switchTab('marcacoes')" id="tab-marcacoes" class="tab-btn border-b-2 border-black pb-3 px-1 text-sm font-semibold text-black whitespace-nowrap">
-            Horários & Marcações
-          </button>
-          <button onclick="switchTab('treinadores')" id="tab-treinadores" class="tab-btn border-b-2 border-transparent pb-3 px-1 text-sm font-medium text-zinc-500 hover:text-zinc-800 hover:border-zinc-300 whitespace-nowrap">
-            Treinadores
-          </button>
-          <button onclick="switchTab('atletas')" id="tab-atletas" class="tab-btn border-b-2 border-transparent pb-3 px-1 text-sm font-medium text-zinc-500 hover:text-zinc-800 hover:border-zinc-300 whitespace-nowrap">
-            Atletas
-          </button>
-          <button onclick="switchTab('pessoas')" id="tab-pessoas" class="tab-btn border-b-2 border-transparent pb-3 px-1 text-sm font-medium text-zinc-500 hover:text-zinc-800 hover:border-zinc-300 whitespace-nowrap">
-            Pessoas Físicas / Comunidade
-          </button>
-        </nav>
       </div>
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-      <!-- ABA 1: MARCAÇÕES -->
-      <section id="content-marcacoes" class="tab-content block space-y-6">
+      <!-- CADASTRO RÁPIDO & TABELA -->
+      <section class="space-y-6">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-100 pb-4">
           <div>
-            <h1 class="text-xl font-bold tracking-tight">Marcações de Ginásio</h1>
-            <p class="text-xs text-zinc-500">Agende treinos e gira a ocupação do recinto.</p>
+            <h1 class="text-xl font-bold tracking-tight">Marcações do Ginásio</h1>
+            <p class="text-xs text-zinc-500">Consulte e adicione novos horários de utilização do recinto.</p>
           </div>
           <button onclick="toggleModalMarcacao(true)" class="w-full sm:w-auto bg-black text-white text-xs font-semibold uppercase tracking-wider px-4 py-2.5 hover:bg-zinc-800 transition-all">
             + Nova Marcação
@@ -104,221 +88,15 @@
                 <tr>
                   <th class="p-3">Data</th>
                   <th class="p-3">Horário</th>
-                  <th class="p-3">Treinador Responsável</th>
-                  <th class="p-3">Atividade / Escalão</th>
+                  <th class="p-3">Nome do Responsável</th>
                   <th class="p-3">Vínculo</th>
-                  <th class="p-3 text-right">Ações</th>
+                  <th class="p-3 text-right">Ação</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-zinc-200" id="tabela-marcacoes">
-                <tr><td colspan="6" class="p-4 text-center text-zinc-400">A carregar marcações...</td></tr>
+                <tr><td colspan="5" class="p-4 text-center text-zinc-400">A carregar marcações...</td></tr>
               </tbody>
             </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA 2: TREINADORES (COM NIF, CC, LICENÇA E MORADA) -->
-      <section id="content-treinadores" class="tab-content hidden space-y-6">
-        <div class="border-b border-zinc-100 pb-4">
-          <h1 class="text-xl font-bold tracking-tight">Gestão de Treinadores</h1>
-          <p class="text-xs text-zinc-500">Registo completo e dados pessoais do corpo técnico.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="border border-zinc-200 p-4 bg-zinc-50/50 space-y-4">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-2">Cadastrar Treinador</h2>
-            <form id="form-treinador" class="space-y-3">
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Nome Completo</label>
-                <input type="text" id="tr-nome" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">NIF</label>
-                  <input type="text" id="tr-nif" placeholder="123456789" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">Cartão Cidadão (CC)</label>
-                  <input type="text" id="tr-cc" placeholder="00000000 0 ZZ0" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">Nº Licença Treinador</label>
-                  <input type="text" id="tr-licenca" placeholder="Ex: FPV-999" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">Telefone</label>
-                  <input type="tel" id="tr-contacto" placeholder="+351 912 345 678" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Escalão Principal</label>
-                <input type="text" id="tr-escalao" placeholder="Ex: Cadetes / Juvenis" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Morada / Endereço</label>
-                <input type="text" id="tr-morada" placeholder="Rua, Número, Localidade" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <button type="submit" class="w-full bg-black text-white text-xs font-semibold py-2.5 uppercase tracking-wider hover:bg-zinc-800">Guardar Treinador</button>
-            </form>
-          </div>
-
-          <div class="lg:col-span-2 border border-zinc-200 p-4 space-y-3">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-2">Treinadores Ativos</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="lista-treinadores">
-              <p class="text-xs text-zinc-400">A carregar treinadores...</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA 3: ATLETAS (COM DADOS COMPLETO E VÍNCULO AO TREINADOR) -->
-      <section id="content-atletas" class="tab-content hidden space-y-6">
-        <div class="border-b border-zinc-100 pb-4">
-          <h1 class="text-xl font-bold tracking-tight">Gestão de Atletas</h1>
-          <p class="text-xs text-zinc-500">Registo detalhado de atletas e associação aos treinadores responsáveis.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="border border-zinc-200 p-4 bg-zinc-50/50 space-y-4">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-2">Cadastrar Atleta</h2>
-            <form id="form-atleta" class="space-y-3">
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Nome Completo do Atleta</label>
-                <input type="text" id="at-nome" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">NIF</label>
-                  <input type="text" id="at-nif" placeholder="123456789" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">CC / Nº Identificação</label>
-                  <input type="text" id="at-cc" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">Nº Licença / Inscrição</label>
-                  <input type="text" id="at-licenca" placeholder="Ex: FPV-1020" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">Telefone</label>
-                  <input type="tel" id="at-contacto" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Vínculo</label>
-                <select id="at-vinculo" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                  <option value="academicos">Académicos</option>
-                  <option value="freguesia">Freguesia</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Escalão</label>
-                <input type="text" id="at-escalao" placeholder="Ex: Iniciadas B" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Treinador Responsável</label>
-                <select id="at-treinador" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                  <!-- Carregado via JS -->
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Morada / Endereço</label>
-                <input type="text" id="at-morada" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <button type="submit" class="w-full bg-black text-white text-xs font-semibold py-2.5 uppercase tracking-wider hover:bg-zinc-800">Guardar Atleta</button>
-            </form>
-          </div>
-
-          <div class="lg:col-span-2 space-y-3">
-            <div class="border border-zinc-200 overflow-hidden">
-              <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                  <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
-                    <tr>
-                      <th class="p-3">Atleta</th>
-                      <th class="p-3">NIF / CC / Licença</th>
-                      <th class="p-3">Vínculo & Escalão</th>
-                      <th class="p-3">Treinador</th>
-                      <th class="p-3 text-right">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-zinc-200" id="tabela-atletas">
-                    <tr><td colspan="5" class="p-4 text-center text-zinc-400">A carregar atletas...</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA 4: PESSOAS FÍSICAS (COM DADOS DENTÍTICO) -->
-      <section id="content-pessoas" class="tab-content hidden space-y-6">
-        <div class="border-b border-zinc-100 pb-4">
-          <h1 class="text-xl font-bold tracking-tight">Pessoas Físicas / Comunidade</h1>
-          <p class="text-xs text-zinc-500">Registo de sócios, encarregados de educação e residentes da freguesia.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="border border-zinc-200 p-4 bg-zinc-50/50 space-y-4">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-2">Registar Pessoa Física</h2>
-            <form id="form-pessoa" class="space-y-3">
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Nome Completo</label>
-                <input type="text" id="pf-nome" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">NIF</label>
-                  <input type="text" id="pf-nif" placeholder="123456789" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-                <div>
-                  <label class="block text-xs font-medium text-zinc-700 mb-1">CC / Nº Identificação</label>
-                  <input type="text" id="pf-cc" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                </div>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Tipo / Categoria</label>
-                <select id="pf-tipo" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-                  <option value="Residente Freguesia">Residente Freguesia</option>
-                  <option value="Sócio Clube">Sócio Clube</option>
-                  <option value="Encarregado de Educação">Encarregado de Educação</option>
-                  <option value="Outro">Outro</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Telefone / Contacto</label>
-                <input type="text" id="pf-contacto" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Morada / Endereço</label>
-                <input type="text" id="pf-morada" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-              </div>
-              <button type="submit" class="w-full bg-black text-white text-xs font-semibold py-2.5 uppercase tracking-wider hover:bg-zinc-800">Guardar Pessoa</button>
-            </form>
-          </div>
-
-          <div class="lg:col-span-2 border border-zinc-200 overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-xs">
-                <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
-                  <tr>
-                    <th class="p-3">Nome</th>
-                    <th class="p-3">NIF / CC</th>
-                    <th class="p-3">Categoria & Contacto</th>
-                    <th class="p-3 text-right">Ação</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-zinc-200" id="tabela-pessoas">
-                  <tr><td colspan="4" class="p-4 text-center text-zinc-400">A carregar registos...</td></tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
       </section>
@@ -326,45 +104,39 @@
     </main>
   </div>
 
-  <!-- MODAL: NOVA MARCAÇÃO DE HORÁRIO -->
+  <!-- MODAL: NOVA MARCAÇÃO SIMPLIFICADA -->
   <div id="modal-marcacao" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-white border border-black w-full max-w-md p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b border-zinc-200 pb-3">
-        <h3 class="font-bold text-sm uppercase tracking-wider">Nova Marcação de Ginásio</h3>
+        <h3 class="font-bold text-sm uppercase tracking-wider">Nova Marcação de Horário</h3>
         <button onclick="toggleModalMarcacao(false)" class="text-zinc-500 hover:text-black font-bold text-lg">✕</button>
       </div>
 
       <form id="form-marcacao" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-zinc-700 mb-1">Nome Completo</label>
+          <input type="text" id="mc-nome" placeholder="Nome de quem está a marcar" required class="w-full border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+        </div>
         <div>
           <label class="block text-xs font-medium text-zinc-700 mb-1">Data</label>
           <input type="date" id="mc-data" required class="w-full border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-medium text-zinc-700 mb-1">Hora Início</label>
+            <label class="block text-xs font-medium text-zinc-700 mb-1">Hora de Início</label>
             <input type="time" id="mc-inicio" required class="w-full border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
           </div>
           <div>
-            <label class="block text-xs font-medium text-zinc-700 mb-1">Hora Fim</label>
+            <label class="block text-xs font-medium text-zinc-700 mb-1">Hora de Fim</label>
             <input type="time" id="mc-fim" required class="w-full border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-medium text-zinc-700 mb-1">Entidade / Vínculo</label>
+          <label class="block text-xs font-medium text-zinc-700 mb-1">Vínculo</label>
           <select id="mc-vinculo" required class="w-full border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
             <option value="academicos">Académicos</option>
             <option value="freguesia">Freguesia</option>
           </select>
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-zinc-700 mb-1">Treinador Responsável</label>
-          <select id="mc-treinador" required class="w-full border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
-            <!-- Carregado via JS -->
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-zinc-700 mb-1">Escalão / Atividade</label>
-          <input type="text" id="mc-atividade" placeholder="Ex: Cadetes - Treino Tático" required class="w-full border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
         </div>
 
         <div class="pt-3 flex gap-2 justify-end border-t border-zinc-100">
@@ -404,19 +176,6 @@
       location.reload();
     }
 
-    // NAVEGAÇÃO
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('border-black', 'text-black', 'font-semibold');
-        btn.classList.add('border-transparent', 'text-zinc-500', 'font-medium');
-      });
-      document.getElementById(`content-${tabId}`).classList.remove('hidden');
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      activeBtn.classList.add('border-black', 'text-black', 'font-semibold');
-      activeBtn.classList.remove('border-transparent', 'text-zinc-500', 'font-medium');
-    }
-
     function toggleModalMarcacao(show) {
       const modal = document.getElementById('modal-marcacao');
       if (show) modal.classList.remove('hidden');
@@ -424,7 +183,7 @@
     }
   </script>
 
-  <!-- INTEGRATION SCRIPT FIREBASE -->
+  <!-- FIREBASE INTEGRATION SCRIPT -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -441,170 +200,29 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
     const marcacoesRef = collection(db, "marcacoes");
-    const treinadoresRef = collection(db, "treinadores");
-    const atletasRef = collection(db, "atletas");
-    const pessoasRef = collection(db, "pessoas_fisicas");
-
-    // LISTAR TREINADORES
-    onSnapshot(treinadoresRef, (snapshot) => {
-      const listaDiv = document.getElementById('lista-treinadores');
-      const selectAtletas = document.getElementById('at-treinador');
-      const selectMarcacoes = document.getElementById('mc-treinador');
-
-      listaDiv.innerHTML = '';
-      selectAtletas.innerHTML = '<option value="">Selecione o Treinador</option>';
-      selectMarcacoes.innerHTML = '<option value="">Selecione o Treinador</option>';
-
-      if (snapshot.empty) {
-        listaDiv.innerHTML = '<p class="text-xs text-zinc-400">Nenhum treinador cadastrado.</p>';
-        return;
-      }
-
-      snapshot.docs.forEach(docSnap => {
-        const data = docSnap.data();
-        listaDiv.innerHTML += `
-          <div class="border border-zinc-200 p-3 space-y-1">
-            <div class="flex justify-between items-start">
-              <h3 class="font-bold text-sm">${data.nome}</h3>
-              <span class="text-[10px] bg-black text-white px-1.5 py-0.5 font-semibold">${data.escalao || 'Geral'}</span>
-            </div>
-            <p class="text-[11px] text-zinc-600"><strong>NIF:</strong> ${data.nif || '-'} | <strong>CC:</strong> ${data.cc || '-'}</p>
-            <p class="text-[11px] text-zinc-600"><strong>Licença:</strong> ${data.licenca || '-'} | 📞 ${data.contacto || '-'}</p>
-            <p class="text-[10px] text-zinc-400 border-t border-zinc-100 pt-1 mt-1">📍 ${data.morada || 'Morada não indicada'}</p>
-          </div>
-        `;
-        selectAtletas.innerHTML += `<option value="${data.nome}">${data.nome}</option>`;
-        selectMarcacoes.innerHTML += `<option value="${data.nome}">${data.nome}</option>`;
-      });
-    });
-
-    // CADASTRAR TREINADOR
-    document.getElementById('form-treinador').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await addDoc(treinadoresRef, {
-        nome: document.getElementById('tr-nome').value,
-        nif: document.getElementById('tr-nif').value,
-        cc: document.getElementById('tr-cc').value,
-        licenca: document.getElementById('tr-licenca').value,
-        contacto: document.getElementById('tr-contacto').value,
-        escalao: document.getElementById('tr-escalao').value,
-        morada: document.getElementById('tr-morada').value
-      });
-      e.target.reset();
-    });
-
-    // CADASTRAR ATLETA
-    document.getElementById('form-atleta').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await addDoc(atletasRef, {
-        nome: document.getElementById('at-nome').value,
-        nif: document.getElementById('at-nif').value,
-        cc: document.getElementById('at-cc').value,
-        licenca: document.getElementById('at-licenca').value,
-        contacto: document.getElementById('at-contacto').value,
-        vinculo: document.getElementById('at-vinculo').value,
-        escalao: document.getElementById('at-escalao').value,
-        treinador: document.getElementById('at-treinador').value,
-        morada: document.getElementById('at-morada').value
-      });
-      e.target.reset();
-    });
-
-    // LISTAR ATLETAS
-    onSnapshot(atletasRef, (snapshot) => {
-      const tabela = document.getElementById('tabela-atletas');
-      tabela.innerHTML = '';
-      if (snapshot.empty) {
-        tabela.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-zinc-400">Nenhum atleta cadastrado.</td></tr>';
-        return;
-      }
-      snapshot.docs.forEach(docSnap => {
-        const a = docSnap.data();
-        const id = docSnap.id;
-        tabela.innerHTML += `
-          <tr class="hover:bg-zinc-50">
-            <td class="p-3 font-medium text-zinc-900">
-              <div>${a.nome}</div>
-              <div class="text-[10px] text-zinc-400">📍 ${a.morada || 'Sem morada'}</div>
-            </td>
-            <td class="p-3 text-zinc-600">NIF: ${a.nif || '-'}<br>CC: ${a.cc || '-'}<br>Lic: ${a.licenca || '-'}</td>
-            <td class="p-3">
-              <span class="${a.vinculo === 'academicos' ? 'bg-black text-white' : 'bg-zinc-200 text-zinc-800'} px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">${a.vinculo}</span>
-              <div class="mt-1 font-medium text-zinc-700">${a.escalao}</div>
-            </td>
-            <td class="p-3 font-semibold text-zinc-800">${a.treinador || 'Sem Treinador'}</td>
-            <td class="p-3 text-right"><button onclick="deletarAtleta('${id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Apagar</button></td>
-          </tr>
-        `;
-      });
-    });
-
-    // CADASTRAR PESSOA FÍSICA
-    document.getElementById('form-pessoa').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await addDoc(pessoasRef, {
-        nome: document.getElementById('pf-nome').value,
-        nif: document.getElementById('pf-nif').value,
-        cc: document.getElementById('pf-cc').value,
-        tipo: document.getElementById('pf-tipo').value,
-        contacto: document.getElementById('pf-contacto').value,
-        morada: document.getElementById('pf-morada').value
-      });
-      e.target.reset();
-    });
-
-    // LISTAR PESSOAS FÍSICAS
-    onSnapshot(pessoasRef, (snapshot) => {
-      const tabela = document.getElementById('tabela-pessoas');
-      tabela.innerHTML = '';
-      if (snapshot.empty) {
-        tabela.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-zinc-400">Nenhuma pessoa física cadastrada.</td></tr>';
-        return;
-      }
-      snapshot.docs.forEach(docSnap => {
-        const p = docSnap.data();
-        const id = docSnap.id;
-        tabela.innerHTML += `
-          <tr class="hover:bg-zinc-50">
-            <td class="p-3 font-medium text-zinc-900">
-              <div>${p.nome}</div>
-              <div class="text-[10px] text-zinc-400">📍 ${p.morada || 'Sem morada'}</div>
-            </td>
-            <td class="p-3 text-zinc-600">NIF: ${p.nif || '-'}<br>CC: ${p.cc || '-'}</td>
-            <td class="p-3">
-              <span class="bg-zinc-100 text-zinc-800 px-2 py-0.5 border border-zinc-200 text-[10px] font-semibold">${p.tipo}</span>
-              <div class="mt-1 text-zinc-500">📞 ${p.contacto || '-'}</div>
-            </td>
-            <td class="p-3 text-right"><button onclick="deletarPessoa('${id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Apagar</button></td>
-          </tr>
-        `;
-      });
-    });
 
     // CADASTRAR MARCAÇÃO
     document.getElementById('form-marcacao').addEventListener('submit', async (e) => {
       e.preventDefault();
       await addDoc(marcacoesRef, {
+        nome: document.getElementById('mc-nome').value,
         data: document.getElementById('mc-data').value,
         horaInicio: document.getElementById('mc-inicio').value,
         horaFim: document.getElementById('mc-fim').value,
-        vinculo: document.getElementById('mc-vinculo').value,
-        treinador: document.getElementById('mc-treinador').value,
-        atividade: document.getElementById('mc-atividade').value
+        vinculo: document.getElementById('mc-vinculo').value
       });
       e.target.reset();
       toggleModalMarcacao(false);
     });
 
-    // LISTAR MARCAÇÕES
+    // LISTAR MARCAÇÕES EM TEMPO REAL
     const qMarcacoes = query(marcacoesRef, orderBy("data", "asc"));
     onSnapshot(qMarcacoes, (snapshot) => {
       const tabela = document.getElementById('tabela-marcacoes');
       tabela.innerHTML = '';
       if (snapshot.empty) {
-        tabela.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-zinc-400">Nenhuma marcação registada.</td></tr>';
+        tabela.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-zinc-400">Nenhuma marcação registada.</td></tr>';
         return;
       }
       snapshot.docs.forEach(docSnap => {
@@ -613,9 +231,8 @@
         tabela.innerHTML += `
           <tr class="hover:bg-zinc-50 transition-colors">
             <td class="p-3 font-medium">${m.data}</td>
-            <td class="p-3 font-semibold text-zinc-900">${m.horaInicio} - ${m.horaFim}</td>
-            <td class="p-3 font-semibold">${m.treinador}</td>
-            <td class="p-3"><span class="bg-zinc-100 text-zinc-800 px-2 py-0.5 font-medium border border-zinc-200">${m.atividade}</span></td>
+            <td class="p-3 font-semibold text-zinc-900">${m.horaInicio} às ${m.horaFim}</td>
+            <td class="p-3 font-semibold">${m.nome}</td>
             <td class="p-3"><span class="${m.vinculo === 'academicos' ? 'bg-black text-white' : 'bg-zinc-200 text-zinc-800'} px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">${m.vinculo}</span></td>
             <td class="p-3 text-right"><button onclick="deletarMarcacao('${id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Cancelar</button></td>
           </tr>
@@ -623,10 +240,9 @@
       });
     });
 
-    // APAGAR
-    window.deletarMarcacao = async (id) => { if (confirm("Cancelar esta marcação?")) await deleteDoc(doc(db, "marcacoes", id)); };
-    window.deletarAtleta = async (id) => { if (confirm("Remover este atleta?")) await deleteDoc(doc(db, "atletas", id)); };
-    window.deletarPessoa = async (id) => { if (confirm("Remover esta pessoa?")) await deleteDoc(doc(db, "pessoas_fisicas", id)); };
+    window.deletarMarcacao = async (id) => { 
+      if (confirm("Cancelar esta marcação?")) await deleteDoc(doc(db, "marcacoes", id)); 
+    };
   </script>
 </body>
 </html>
