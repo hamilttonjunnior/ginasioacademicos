@@ -28,7 +28,7 @@
   <div id="login-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-4">
     <div class="border border-black p-6 w-full max-w-sm space-y-4 shadow-xl">
       <div class="flex items-center gap-3">
-        <img src="logo.png" alt="Logo" class="h-8 w-auto object-contain" onerror="this.style.display='none'">
+        <img src="logo.png" alt="Logo FCA" class="h-10 w-auto object-contain">
         <div>
           <h2 class="font-bold text-xs uppercase tracking-wider">Acesso Restrito</h2>
           <span class="text-[10px] text-zinc-500 font-medium block">Ginásio - FCA Os Académicos</span>
@@ -43,17 +43,17 @@
     </div>
   </div>
 
-  <!-- CONTEÚDO DO PAINEL (PROTEGIDO) -->
+  <!-- CONTEÚDO DO PAINEL -->
   <div id="app-content" class="hidden flex-1 flex flex-col">
-    <!-- CABEÇALHO -->
+    <!-- CABEÇALHO COM LOGO -->
     <header class="border-b border-zinc-200 bg-white sticky top-0 z-30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center gap-3">
-            <img src="logo.png" alt="Logo FCA Os Académicos" class="h-10 w-auto object-contain" onerror="this.style.display='none'">
+        <div class="flex justify-between items-center h-20">
+          <div class="flex items-center gap-4">
+            <img src="logo.png" alt="Logo FCA Os Académicos" class="h-12 w-auto object-contain">
             <div>
-              <span class="font-bold text-base sm:text-lg tracking-tight uppercase block leading-none">Ginásio - FCA Os Académicos</span>
-              <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Gestão 2026/2027</span>
+              <span class="font-bold text-lg sm:text-xl tracking-tight uppercase block leading-none">GINÁSIO - FCA OS ACADÉMICOS</span>
+              <span class="text-xs text-zinc-400 uppercase tracking-wider font-semibold mt-1 block">GESTÃO 2026/2027</span>
             </div>
           </div>
           <div class="flex items-center gap-3">
@@ -85,12 +85,12 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-      <!-- ==================== ABA 1: MARCAÇÕES ==================== -->
+      <!-- ABA 1: MARCAÇÕES -->
       <section id="content-marcacoes" class="tab-content block space-y-6">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-100 pb-4">
           <div>
             <h1 class="text-xl font-bold tracking-tight">Marcações de Ginásio</h1>
-            <p class="text-xs text-zinc-500">Agende treinos e gira a ocupação do recinto - Época 2026/2027.</p>
+            <p class="text-xs text-zinc-500">Agende treinos e gira a ocupação do recinto.</p>
           </div>
           <button onclick="toggleModalMarcacao(true)" class="w-full sm:w-auto bg-black text-white text-xs font-semibold uppercase tracking-wider px-4 py-2.5 hover:bg-zinc-800 transition-all">
             + Nova Marcação
@@ -118,11 +118,11 @@
         </div>
       </section>
 
-      <!-- ==================== ABA 2: TREINADORES ==================== -->
+      <!-- ABA 2: TREINADORES (COM NIF, CC, LICENÇA E MORADA) -->
       <section id="content-treinadores" class="tab-content hidden space-y-6">
         <div class="border-b border-zinc-100 pb-4">
           <h1 class="text-xl font-bold tracking-tight">Gestão de Treinadores</h1>
-          <p class="text-xs text-zinc-500">Registe os treinadores do FCA Os Académicos.</p>
+          <p class="text-xs text-zinc-500">Registo completo e dados pessoais do corpo técnico.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -133,13 +133,33 @@
                 <label class="block text-xs font-medium text-zinc-700 mb-1">Nome Completo</label>
                 <input type="text" id="tr-nome" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
               </div>
-              <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Contacto Telefónico</label>
-                <input type="tel" id="tr-contacto" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">NIF</label>
+                  <input type="text" id="tr-nif" placeholder="123456789" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">Cartão Cidadão (CC)</label>
+                  <input type="text" id="tr-cc" placeholder="00000000 0 ZZ0" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">Nº Licença Treinador</label>
+                  <input type="text" id="tr-licenca" placeholder="Ex: FPV-999" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">Telefone</label>
+                  <input type="tel" id="tr-contacto" placeholder="+351 912 345 678" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
               </div>
               <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Escalão / Modalidade</label>
-                <input type="text" id="tr-escalao" placeholder="Ex: Cadetes / Voleibol" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                <label class="block text-xs font-medium text-zinc-700 mb-1">Escalão Principal</label>
+                <input type="text" id="tr-escalao" placeholder="Ex: Cadetes / Juvenis" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-zinc-700 mb-1">Morada / Endereço</label>
+                <input type="text" id="tr-morada" placeholder="Rua, Número, Localidade" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
               </div>
               <button type="submit" class="w-full bg-black text-white text-xs font-semibold py-2.5 uppercase tracking-wider hover:bg-zinc-800">Guardar Treinador</button>
             </form>
@@ -154,11 +174,11 @@
         </div>
       </section>
 
-      <!-- ==================== ABA 3: ATLETAS ==================== -->
+      <!-- ABA 3: ATLETAS (COM DADOS COMPLETO E VÍNCULO AO TREINADOR) -->
       <section id="content-atletas" class="tab-content hidden space-y-6">
         <div class="border-b border-zinc-100 pb-4">
           <h1 class="text-xl font-bold tracking-tight">Gestão de Atletas</h1>
-          <p class="text-xs text-zinc-500">Registo de atletas associados aos seus respetivos treinadores do clube.</p>
+          <p class="text-xs text-zinc-500">Registo detalhado de atletas e associação aos treinadores responsáveis.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -168,6 +188,26 @@
               <div>
                 <label class="block text-xs font-medium text-zinc-700 mb-1">Nome Completo do Atleta</label>
                 <input type="text" id="at-nome" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">NIF</label>
+                  <input type="text" id="at-nif" placeholder="123456789" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">CC / Nº Identificação</label>
+                  <input type="text" id="at-cc" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">Nº Licença / Inscrição</label>
+                  <input type="text" id="at-licenca" placeholder="Ex: FPV-1020" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">Telefone</label>
+                  <input type="tel" id="at-contacto" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
               </div>
               <div>
                 <label class="block text-xs font-medium text-zinc-700 mb-1">Vínculo</label>
@@ -181,10 +221,14 @@
                 <input type="text" id="at-escalao" placeholder="Ex: Iniciadas B" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
               </div>
               <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Treinador Responsável (Obrigatório)</label>
+                <label class="block text-xs font-medium text-zinc-700 mb-1">Treinador Responsável</label>
                 <select id="at-treinador" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
                   <!-- Carregado via JS -->
                 </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-zinc-700 mb-1">Morada / Endereço</label>
+                <input type="text" id="at-morada" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
               </div>
               <button type="submit" class="w-full bg-black text-white text-xs font-semibold py-2.5 uppercase tracking-wider hover:bg-zinc-800">Guardar Atleta</button>
             </form>
@@ -192,26 +236,28 @@
 
           <div class="lg:col-span-2 space-y-3">
             <div class="border border-zinc-200 overflow-hidden">
-              <table class="w-full text-left text-xs">
-                <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
-                  <tr>
-                    <th class="p-3">Atleta</th>
-                    <th class="p-3">Vínculo</th>
-                    <th class="p-3">Escalão</th>
-                    <th class="p-3">Treinador Atrelado</th>
-                    <th class="p-3 text-right">Ação</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-zinc-200" id="tabela-atletas">
-                  <tr><td colspan="5" class="p-4 text-center text-zinc-400">A carregar atletas...</td></tr>
-                </tbody>
-              </table>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
+                    <tr>
+                      <th class="p-3">Atleta</th>
+                      <th class="p-3">NIF / CC / Licença</th>
+                      <th class="p-3">Vínculo & Escalão</th>
+                      <th class="p-3">Treinador</th>
+                      <th class="p-3 text-right">Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-zinc-200" id="tabela-atletas">
+                    <tr><td colspan="5" class="p-4 text-center text-zinc-400">A carregar atletas...</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== ABA 4: PESSOAS FÍSICAS ==================== -->
+      <!-- ABA 4: PESSOAS FÍSICAS (COM DADOS DENTÍTICO) -->
       <section id="content-pessoas" class="tab-content hidden space-y-6">
         <div class="border-b border-zinc-100 pb-4">
           <h1 class="text-xl font-bold tracking-tight">Pessoas Físicas / Comunidade</h1>
@@ -226,6 +272,16 @@
                 <label class="block text-xs font-medium text-zinc-700 mb-1">Nome Completo</label>
                 <input type="text" id="pf-nome" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
               </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">NIF</label>
+                  <input type="text" id="pf-nif" placeholder="123456789" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-zinc-700 mb-1">CC / Nº Identificação</label>
+                  <input type="text" id="pf-cc" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+                </div>
+              </div>
               <div>
                 <label class="block text-xs font-medium text-zinc-700 mb-1">Tipo / Categoria</label>
                 <select id="pf-tipo" required class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
@@ -236,27 +292,33 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-medium text-zinc-700 mb-1">Contacto Telefónico / E-mail</label>
+                <label class="block text-xs font-medium text-zinc-700 mb-1">Telefone / Contacto</label>
                 <input type="text" id="pf-contacto" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-zinc-700 mb-1">Morada / Endereço</label>
+                <input type="text" id="pf-morada" class="w-full bg-white border border-zinc-300 p-2 text-xs focus:outline-none focus:border-black">
               </div>
               <button type="submit" class="w-full bg-black text-white text-xs font-semibold py-2.5 uppercase tracking-wider hover:bg-zinc-800">Guardar Pessoa</button>
             </form>
           </div>
 
           <div class="lg:col-span-2 border border-zinc-200 overflow-hidden">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
-                <tr>
-                  <th class="p-3">Nome</th>
-                  <th class="p-3">Categoria</th>
-                  <th class="p-3">Contacto</th>
-                  <th class="p-3 text-right">Ação</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-zinc-200" id="tabela-pessoas">
-                <tr><td colspan="4" class="p-4 text-center text-zinc-400">A carregar registos...</td></tr>
-              </tbody>
-            </table>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
+                  <tr>
+                    <th class="p-3">Nome</th>
+                    <th class="p-3">NIF / CC</th>
+                    <th class="p-3">Categoria & Contacto</th>
+                    <th class="p-3 text-right">Ação</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-zinc-200" id="tabela-pessoas">
+                  <tr><td colspan="4" class="p-4 text-center text-zinc-400">A carregar registos...</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -318,7 +380,7 @@
   </div>
 
   <script>
-    // AUTENTICAÇÃO COM PALAVRA-PASSE
+    // AUTENTICAÇÃO
     const PASSWORD_CORRETA = "diogo123";
 
     if (sessionStorage.getItem("auth_ginasio") === "true") {
@@ -328,8 +390,7 @@
 
     document.getElementById("form-login").addEventListener("submit", (e) => {
       e.preventDefault();
-      const senha = document.getElementById("input-senha").value;
-      if (senha === PASSWORD_CORRETA) {
+      if (document.getElementById("input-senha").value === PASSWORD_CORRETA) {
         sessionStorage.setItem("auth_ginasio", "true");
         document.getElementById("login-screen").classList.add("hidden");
         document.getElementById("app-content").classList.remove("hidden");
@@ -343,7 +404,7 @@
       location.reload();
     }
 
-    // ALTERNAR ABAS
+    // NAVEGAÇÃO
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -363,7 +424,7 @@
     }
   </script>
 
-  <!-- FIREBASE INTEGRATION SCRIPT -->
+  <!-- INTEGRATION SCRIPT FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -386,7 +447,7 @@
     const atletasRef = collection(db, "atletas");
     const pessoasRef = collection(db, "pessoas_fisicas");
 
-    // LISTAR TREINADORES & POPULAR SELECTS
+    // LISTAR TREINADORES
     onSnapshot(treinadoresRef, (snapshot) => {
       const listaDiv = document.getElementById('lista-treinadores');
       const selectAtletas = document.getElementById('at-treinador');
@@ -404,12 +465,14 @@
       snapshot.docs.forEach(docSnap => {
         const data = docSnap.data();
         listaDiv.innerHTML += `
-          <div class="border border-zinc-200 p-3 flex justify-between items-start">
-            <div>
+          <div class="border border-zinc-200 p-3 space-y-1">
+            <div class="flex justify-between items-start">
               <h3 class="font-bold text-sm">${data.nome}</h3>
-              <p class="text-xs text-zinc-500 mt-0.5">📞 ${data.contacto || 'Sem contacto'}</p>
+              <span class="text-[10px] bg-black text-white px-1.5 py-0.5 font-semibold">${data.escalao || 'Geral'}</span>
             </div>
-            <span class="text-[10px] bg-black text-white px-1.5 py-0.5 font-semibold">${data.escalao || 'Geral'}</span>
+            <p class="text-[11px] text-zinc-600"><strong>NIF:</strong> ${data.nif || '-'} | <strong>CC:</strong> ${data.cc || '-'}</p>
+            <p class="text-[11px] text-zinc-600"><strong>Licença:</strong> ${data.licenca || '-'} | 📞 ${data.contacto || '-'}</p>
+            <p class="text-[10px] text-zinc-400 border-t border-zinc-100 pt-1 mt-1">📍 ${data.morada || 'Morada não indicada'}</p>
           </div>
         `;
         selectAtletas.innerHTML += `<option value="${data.nome}">${data.nome}</option>`;
@@ -422,8 +485,12 @@
       e.preventDefault();
       await addDoc(treinadoresRef, {
         nome: document.getElementById('tr-nome').value,
+        nif: document.getElementById('tr-nif').value,
+        cc: document.getElementById('tr-cc').value,
+        licenca: document.getElementById('tr-licenca').value,
         contacto: document.getElementById('tr-contacto').value,
-        escalao: document.getElementById('tr-escalao').value
+        escalao: document.getElementById('tr-escalao').value,
+        morada: document.getElementById('tr-morada').value
       });
       e.target.reset();
     });
@@ -433,9 +500,14 @@
       e.preventDefault();
       await addDoc(atletasRef, {
         nome: document.getElementById('at-nome').value,
+        nif: document.getElementById('at-nif').value,
+        cc: document.getElementById('at-cc').value,
+        licenca: document.getElementById('at-licenca').value,
+        contacto: document.getElementById('at-contacto').value,
         vinculo: document.getElementById('at-vinculo').value,
         escalao: document.getElementById('at-escalao').value,
-        treinador: document.getElementById('at-treinador').value
+        treinador: document.getElementById('at-treinador').value,
+        morada: document.getElementById('at-morada').value
       });
       e.target.reset();
     });
@@ -453,10 +525,16 @@
         const id = docSnap.id;
         tabela.innerHTML += `
           <tr class="hover:bg-zinc-50">
-            <td class="p-3 font-medium text-zinc-900">${a.nome}</td>
-            <td class="p-3"><span class="${a.vinculo === 'academicos' ? 'bg-black text-white' : 'bg-zinc-200 text-zinc-800'} px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">${a.vinculo}</span></td>
-            <td class="p-3">${a.escalao}</td>
-            <td class="p-3 font-semibold text-zinc-700">${a.treinador || 'Sem Treinador'}</td>
+            <td class="p-3 font-medium text-zinc-900">
+              <div>${a.nome}</div>
+              <div class="text-[10px] text-zinc-400">📍 ${a.morada || 'Sem morada'}</div>
+            </td>
+            <td class="p-3 text-zinc-600">NIF: ${a.nif || '-'}<br>CC: ${a.cc || '-'}<br>Lic: ${a.licenca || '-'}</td>
+            <td class="p-3">
+              <span class="${a.vinculo === 'academicos' ? 'bg-black text-white' : 'bg-zinc-200 text-zinc-800'} px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">${a.vinculo}</span>
+              <div class="mt-1 font-medium text-zinc-700">${a.escalao}</div>
+            </td>
+            <td class="p-3 font-semibold text-zinc-800">${a.treinador || 'Sem Treinador'}</td>
             <td class="p-3 text-right"><button onclick="deletarAtleta('${id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Apagar</button></td>
           </tr>
         `;
@@ -468,8 +546,11 @@
       e.preventDefault();
       await addDoc(pessoasRef, {
         nome: document.getElementById('pf-nome').value,
+        nif: document.getElementById('pf-nif').value,
+        cc: document.getElementById('pf-cc').value,
         tipo: document.getElementById('pf-tipo').value,
-        contacto: document.getElementById('pf-contacto').value
+        contacto: document.getElementById('pf-contacto').value,
+        morada: document.getElementById('pf-morada').value
       });
       e.target.reset();
     });
@@ -487,9 +568,15 @@
         const id = docSnap.id;
         tabela.innerHTML += `
           <tr class="hover:bg-zinc-50">
-            <td class="p-3 font-medium text-zinc-900">${p.nome}</td>
-            <td class="p-3"><span class="bg-zinc-100 text-zinc-800 px-2 py-0.5 border border-zinc-200 text-[10px] font-semibold">${p.tipo}</span></td>
-            <td class="p-3 text-zinc-500">${p.contacto || '-'}</td>
+            <td class="p-3 font-medium text-zinc-900">
+              <div>${p.nome}</div>
+              <div class="text-[10px] text-zinc-400">📍 ${p.morada || 'Sem morada'}</div>
+            </td>
+            <td class="p-3 text-zinc-600">NIF: ${p.nif || '-'}<br>CC: ${p.cc || '-'}</td>
+            <td class="p-3">
+              <span class="bg-zinc-100 text-zinc-800 px-2 py-0.5 border border-zinc-200 text-[10px] font-semibold">${p.tipo}</span>
+              <div class="mt-1 text-zinc-500">📞 ${p.contacto || '-'}</div>
+            </td>
             <td class="p-3 text-right"><button onclick="deletarPessoa('${id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Apagar</button></td>
           </tr>
         `;
