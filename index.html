@@ -74,28 +74,24 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-100 pb-4">
           <div>
             <h1 class="text-xl font-bold tracking-tight">Marcações do Ginásio</h1>
-            <p class="text-xs text-zinc-500">Gira os horários de utilização do recinto de forma estruturada.</p>
+            <p class="text-xs text-zinc-500">Organização hierárquica em cascata (Mês → Semana → Dia).</p>
           </div>
           <button onclick="toggleModalMarcacao(true)" class="w-full sm:w-auto bg-black text-white text-xs font-semibold uppercase tracking-wider px-4 py-2.5 hover:bg-zinc-800 transition-all">
             + Nova Marcação
           </button>
         </div>
 
-        <!-- BARRA DE AGRUPAMENTO, FILTROS E PESQUISA -->
-        <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 bg-zinc-50 p-3 border border-zinc-200">
+        <!-- BARRA DE PESQUISA E ACÇÕES -->
+        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-zinc-50 p-3 border border-zinc-200">
+          <input type="text" id="input-busca" oninput="filtrarEExibirMarcacoes()" placeholder="Pesquisar por nome, data ou horário..." class="w-full sm:max-w-md bg-white border border-zinc-300 px-3 py-1.5 text-xs focus:outline-none focus:border-black">
           
-          <!-- Filtros de Período (Semana, Mês, Ano, Todos) -->
-          <div class="flex items-center gap-1">
-            <span class="text-[10px] font-bold uppercase text-zinc-500 mr-1">Exibir:</span>
-            <button onclick="definirFiltroPeriodo('todas')" id="btn-periodo-todas" class="btn-periodo bg-black text-white px-2.5 py-1 text-xs font-medium">Todas</button>
-            <button onclick="definirFiltroPeriodo('semana')" id="btn-periodo-semana" class="btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium">Esta Semana</button>
-            <button onclick="definirFiltroPeriodo('mes')" id="btn-periodo-mes" class="btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium">Este Mês</button>
-            <button onclick="definirFiltroPeriodo('ano')" id="btn-periodo-ano" class="btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium">Este Ano</button>
-          </div>
-
-          <!-- Campo de Pesquisa em Tempo Real -->
-          <div class="flex-1 max-w-sm">
-            <input type="text" id="input-busca" oninput="filtrarEExibirMarcacoes()" placeholder="Pesquisar por nome, data ou hora..." class="w-full bg-white border border-zinc-300 px-3 py-1.5 text-xs focus:outline-none focus:border-black">
+          <div class="flex items-center gap-2 text-xs">
+            <button onclick="expandirTudo(true)" class="border border-zinc-300 bg-white px-2.5 py-1 font-medium hover:border-black text-[11px]">
+              Expandir Tudo
+            </button>
+            <button onclick="expandirTudo(false)" class="border border-zinc-300 bg-white px-2.5 py-1 font-medium hover:border-black text-[11px]">
+              Recolher Tudo
+            </button>
           </div>
         </div>
 
@@ -112,28 +108,11 @@
           </button>
         </div>
 
-        <!-- TABELA DE MARCAÇÕES -->
-        <div class="border border-zinc-200 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-              <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
-                <tr>
-                  <th class="p-3 w-8">
-                    <input type="checkbox" id="check-todos" onchange="toggleSelecionarTodos(this.checked)" class="cursor-pointer">
-                  </th>
-                  <th class="p-3">Data</th>
-                  <th class="p-3">Horário</th>
-                  <th class="p-3">Nome / Responsável</th>
-                  <th class="p-3">Vínculo</th>
-                  <th class="p-3 text-right">Ação</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-zinc-200" id="tabela-marcacoes">
-                <tr><td colspan="6" class="p-4 text-center text-zinc-400">A carregar marcações...</td></tr>
-              </tbody>
-            </table>
-          </div>
+        <!-- CONTAINER DA CASCATA -->
+        <div id="container-cascata" class="space-y-4">
+          <p class="text-xs text-zinc-400 p-4 border border-zinc-200">A carregar marcações...</p>
         </div>
+
       </section>
 
     </main>
@@ -245,7 +224,6 @@
     const marcacoesRef = collection(db, "marcacoes");
 
     let todadAsMarcacoes = [];
-    let filtroPeriodoAtual = 'todas';
 
     // CADASTRAR MARCAÇÃO COM INTERVALO DE DATAS
     document.getElementById('form-marcacao').addEventListener('submit', async (e) => {
@@ -289,91 +267,162 @@
       filtrarEExibirMarcacoes();
     });
 
-    // DEFINIR FILTRO DE PERÍODO (TODAS, SEMANA, MÊS, ANO)
-    window.definirFiltroPeriodo = function(periodo) {
-      filtroPeriodoAtual = periodo;
-      
-      document.querySelectorAll('.btn-periodo').forEach(btn => {
-        btn.className = 'btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium';
-      });
+    // FUNÇÕES AUXILIARES DE DATA E SEMANA
+    function getMesAnoFormatado(dataStr) {
+      const d = new Date(dataStr + 'T00:00:00');
+      return d.toLocaleDateString('pt-PT', { month: 'long', year: 'numeric' }).toUpperCase();
+    }
 
-      const btnAtivo = document.getElementById(`btn-periodo-${periodo}`);
-      if (btnAtivo) {
-        btnAtivo.className = 'btn-periodo bg-black text-white px-2.5 py-1 text-xs font-medium';
-      }
+    function getNumeroSemana(dataStr) {
+      const d = new Date(dataStr + 'T00:00:00');
+      const primerDia = new Date(d.getFullYear(), 0, 1);
+      const dias = Math.floor((d - primerDia) / (24 * 60 * 60 * 1000));
+      return Math.ceil((dias + primerDia.getDay() + 1) / 7);
+    }
 
-      filtrarEExibirMarcacoes();
-    };
-
-    // FILTRAR E EXIBIR TABELA
+    // FILTRAR E MONTAR A CASCATA (MÊS -> SEMANA -> DIA)
     window.filtrarEExibirMarcacoes = function() {
-      const termoBusca = document.getElementById('input-busca').value.toLowerCase();
-      const hoje = new Date();
+      const termo = document.getElementById('input-busca').value.toLowerCase();
+      const container = document.getElementById('container-cascata');
+      container.innerHTML = '';
 
-      let filtradas = todadAsMarcacoes.filter(m => {
-        // Filtro de Busca (Nome, Data ou Hora)
-        const matchBusca = m.nome.toLowerCase().includes(termoBusca) ||
-                           m.data.includes(termoBusca) ||
-                           m.horaInicio.includes(termoBusca) ||
-                           m.horaFim.includes(termoBusca);
+      const filtradas = todadAsMarcacoes.filter(m => 
+        m.nome.toLowerCase().includes(termo) ||
+        m.data.includes(termo) ||
+        m.horaInicio.includes(termo) ||
+        m.horaFim.includes(termo)
+      );
 
-        if (!matchBusca) return false;
-
-        // Filtro de Período
-        const dataItem = new Date(m.data + 'T00:00:00');
-        if (filtroPeriodoAtual === 'semana') {
-          const inicioSemana = new Date(hoje);
-          inicioSemana.setDate(hoje.getDate() - hoje.getDay());
-          const fimSemana = new Date(inicioSemana);
-          fimSemana.setDate(inicioSemana.getDate() + 6);
-          return dataItem >= inicioSemana && dataItem <= fimSemana;
-        } else if (filtroPeriodoAtual === 'mes') {
-          return dataItem.getMonth() === hoje.getMonth() && dataItem.getFullYear() === hoje.getFullYear();
-        } else if (filtroPeriodoAtual === 'ano') {
-          return dataItem.getFullYear() === hoje.getFullYear();
-        }
-
-        return true;
-      });
-
-      renderizarTabela(filtradas);
-    };
-
-    // RENDERIZAR LINHAS DA TABELA
-    function renderizarTabela(lista) {
-      const tabela = document.getElementById('tabela-marcacoes');
-      tabela.innerHTML = '';
-      document.getElementById('check-todos').checked = false;
-      atualizarContadorSelecionados();
-
-      if (lista.length === 0) {
-        tabela.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-zinc-400">Nenhuma marcação encontrada.</td></tr>';
+      if (filtradas.length === 0) {
+        container.innerHTML = '<div class="p-6 border border-dashed border-zinc-300 text-center text-xs text-zinc-400">Nenhuma marcação registada.</div>';
         return;
       }
 
-      lista.forEach(m => {
-        tabela.innerHTML += `
-          <tr class="hover:bg-zinc-50 transition-colors">
-            <td class="p-3">
-              <input type="checkbox" value="${m.id}" onchange="atualizarContadorSelecionados()" class="check-item cursor-pointer">
-            </td>
-            <td class="p-3 font-medium">${m.data}</td>
-            <td class="p-3 font-semibold text-zinc-900">${m.horaInicio} às ${m.horaFim}</td>
-            <td class="p-3 font-semibold">${m.nome}</td>
-            <td class="p-3"><span class="${m.vinculo === 'academicos' ? 'bg-black text-white' : 'bg-zinc-200 text-zinc-800'} px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">${m.vinculo}</span></td>
-            <td class="p-3 text-right"><button onclick="deletarMarcacao('${m.id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Cancelar</button></td>
-          </tr>
-        `;
-      });
-    }
+      // Agrupar por Mês -> Semana -> Dia
+      const hierarquia = {};
 
-    // SELECIONAR TODOS / DESSELECIONAR TODOS
-    window.toggleSelecionarTodos = function(status) {
-      document.querySelectorAll('.check-item').forEach(chk => chk.checked = status);
+      filtradas.forEach(m => {
+        const mesKey = getMesAnoFormatado(m.data);
+        const semNum = getNumeroSemana(m.data);
+        const semKey = `Semana ${semNum}`;
+        const diaKey = m.data;
+
+        if (!hierarquia[mesKey]) hierarquia[mesKey] = {};
+        if (!hierarquia[mesKey][semKey]) hierarquia[mesKey][semKey] = {};
+        if (!hierarquia[mesKey][semKey][diaKey]) hierarquia[mesKey][semKey][diaKey] = [];
+
+        hierarquia[mesKey][semKey][diaKey].push(m);
+      });
+
+      // RENDERIZAR ESTRUTURA EM CASCATA (ACORDEÃO)
+      let html = '';
+      let mesIdx = 0;
+
+      for (let mes in hierarquia) {
+        mesIdx++;
+        html += `
+          <div class="border border-zinc-900 bg-white">
+            <!-- NÍVEL 1: MÊS -->
+            <button onclick="toggleElemento('mes-${mesIdx}')" class="w-full flex justify-between items-center bg-black text-white p-3 font-bold text-xs uppercase tracking-wider text-left">
+              <span>📅 ${mes}</span>
+              <span class="text-zinc-400 text-[10px]">Expandir / Recolher ▼</span>
+            </button>
+
+            <div id="mes-${mesIdx}" class="cascata-conteudo space-y-3 p-3">
+        `;
+
+        let semIdx = 0;
+        for (let semana in hierarquia[mes]) {
+          semIdx++;
+          html += `
+            <div class="border border-zinc-200 bg-zinc-50/50">
+              <!-- NÍVEL 2: SEMANA -->
+              <button onclick="toggleElemento('sem-${mesIdx}-${semIdx}')" class="w-full flex justify-between items-center bg-zinc-100 p-2.5 font-bold text-xs text-zinc-800 text-left border-b border-zinc-200">
+                <span>🗓️ ${semana}</span>
+                <span class="text-zinc-500 text-[10px]">▼</span>
+              </button>
+
+              <div id="sem-${mesIdx}-${semIdx}" class="cascata-conteudo p-2 space-y-3">
+          `;
+
+          for (let dia in hierarquia[mes][semana]) {
+            html += `
+              <!-- NÍVEL 3: DIA & TABELA DE MARCAÇÕES -->
+              <div class="border border-zinc-200 bg-white overflow-hidden">
+                <div class="bg-zinc-800 text-white px-3 py-1.5 font-semibold text-[11px] flex justify-between items-center">
+                  <span>📌 Dia: ${dia}</span>
+                  <span class="text-[10px] text-zinc-300">${hierarquia[mes][semana][dia].length} marcação(ões)</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs">
+                    <thead class="bg-zinc-50 text-zinc-500 border-b border-zinc-200 text-[10px] uppercase font-semibold">
+                      <tr>
+                        <th class="p-2 w-8"><input type="checkbox" onchange="toggleGrupoCheck(this)" class="cursor-pointer"></th>
+                        <th class="p-2">Horário</th>
+                        <th class="p-2">Responsável / Nome</th>
+                        <th class="p-2">Vínculo</th>
+                        <th class="p-2 text-right">Ação</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-200">
+            `;
+
+            hierarquia[mes][semana][dia].forEach(m => {
+              html += `
+                <tr class="hover:bg-zinc-50">
+                  <td class="p-2"><input type="checkbox" value="${m.id}" onchange="atualizarContadorSelecionados()" class="check-item cursor-pointer"></td>
+                  <td class="p-2 font-bold text-zinc-900">${m.horaInicio} às ${m.horaFim}</td>
+                  <td class="p-2 font-medium">${m.nome}</td>
+                  <td class="p-2"><span class="${m.vinculo === 'academicos' ? 'bg-black text-white' : 'bg-zinc-200 text-zinc-800'} px-2 py-0.5 text-[9px] uppercase font-bold tracking-wider">${m.vinculo}</span></td>
+                  <td class="p-2 text-right"><button onclick="deletarMarcacao('${m.id}')" class="text-zinc-400 hover:text-black font-semibold text-[11px]">Cancelar</button></td>
+                </tr>
+              `;
+            });
+
+            html += `
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            `;
+          }
+
+          html += `
+              </div>
+            </div>
+          `;
+        }
+
+        html += `
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
       atualizarContadorSelecionados();
     };
 
-    // ATUALIZAR CONTADOR E BOTÃO DE APAGAR SELECIONADOS
+    // ALTERNAR VISIBILIDADE DE BLOCOS EM CASCATA
+    window.toggleElemento = function(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    };
+
+    window.expandirTudo = function(expandir) {
+      document.querySelectorAll('.cascata-conteudo').forEach(el => {
+        if (expandir) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    };
+
+    window.toggleGrupoCheck = function(mainChk) {
+      const tabela = mainChk.closest('table');
+      tabela.querySelectorAll('.check-item').forEach(chk => chk.checked = mainChk.checked);
+      atualizarContadorSelecionados();
+    };
+
     window.atualizarContadorSelecionados = function() {
       const selecionados = document.querySelectorAll('.check-item:checked');
       const qtd = selecionados.length;
@@ -384,7 +433,6 @@
       else btnApagar.classList.add('hidden');
     };
 
-    // APAGAR APENAS OS SELECIONADOS
     window.deletarSelecionados = async function() {
       const selecionados = document.querySelectorAll('.check-item:checked');
       if (selecionados.length === 0) return;
@@ -396,7 +444,6 @@
       }
     };
 
-    // APAGAR TODOS OS REGISTOS
     window.deletarTodos = async function() {
       if (todadAsMarcacoes.length === 0) return alert("Não existem registos para apagar.");
       
