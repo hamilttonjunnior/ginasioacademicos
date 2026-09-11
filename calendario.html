@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendário de Ocupação | Ginásio do Clube</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white text-zinc-900 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- CABEÇALHO DA PÁGINA PÚBLICA -->
+  <header class="border-b border-zinc-200 bg-white sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-black text-white flex items-center justify-center font-bold text-sm tracking-widest rounded-sm">
+            GG
+          </div>
+          <div>
+            <span class="font-bold text-base sm:text-lg tracking-tight uppercase block leading-none">Ginásio Municipal</span>
+            <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Calendário de Ocupação</span>
+          </div>
+        </div>
+        <a href="index.html" class="text-xs sm:text-sm font-medium text-zinc-600 hover:text-black transition-colors flex items-center gap-1">
+          ← Área de Gestão
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- BARRA DE CONTROLO, FILTROS E NAVEGAÇÃO -->
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-zinc-200 pb-5">
+      
+      <!-- Navegação por Datas -->
+      <div class="flex items-center gap-3">
+        <div class="inline-flex border border-zinc-300">
+          <button onclick="mudarSemana(-1)" class="px-3 py-1.5 text-xs font-semibold hover:bg-zinc-100 border-r border-zinc-300">← Anterior</button>
+          <button onclick="irParaHoje()" class="px-3 py-1.5 text-xs font-semibold hover:bg-zinc-100 border-r border-zinc-300">Hoje</button>
+          <button onclick="mudarSemana(1)" class="px-3 py-1.5 text-xs font-semibold hover:bg-zinc-100">Seguinte →</button>
+        </div>
+        <span class="text-sm font-bold tracking-tight text-zinc-900" id="label-periodo">Semana de 14 a 20 de Setembro</span>
+      </div>
+
+      <!-- Filtros Rápidos -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Filtro por Vínculo/Entidade -->
+        <div class="flex items-center gap-1 border border-zinc-300 p-1 bg-zinc-50 text-xs">
+          <span class="text-[10px] font-bold uppercase text-zinc-500 px-1">Entidade:</span>
+          <button class="bg-black text-white px-2 py-0.5 font-medium text-[11px]">Todas</button>
+          <button class="bg-white border border-zinc-200 hover:border-black px-2 py-0.5 font-medium text-[11px]">Académicos</button>
+          <button class="bg-white border border-zinc-200 hover:border-black px-2 py-0.5 font-medium text-[11px]">Freguesia</button>
+        </div>
+
+        <!-- Selector de Treinador -->
+        <select class="border border-zinc-300 px-3 py-1.5 text-xs bg-white focus:outline-none focus:border-black">
+          <option value="">Todos os Treinadores</option>
+          <option>Carlos Santos</option>
+          <option>Ricardo Silva</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- LEGENDA RÁPIDA -->
+    <div class="flex items-center gap-6 text-xs text-zinc-600">
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-black block border border-black"></span>
+        <span>Treino / Ocupado (Académicos)</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-zinc-400 block border border-zinc-400"></span>
+        <span>Atividade Freguesia</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-white border border-zinc-300 block"></span>
+        <span>Horário Livre</span>
+      </div>
+    </div>
+
+    <!-- GRELHA DO CALENDÁRIO (DESKTOP E TABLET) -->
+    <div class="hidden md:block border border-zinc-200 overflow-x-auto bg-white">
+      <div class="min-w-[800px]">
+        <!-- Cabeçalho dos Dias -->
+        <div class="grid grid-cols-8 border-b border-zinc-200 bg-zinc-100 text-center text-xs font-bold uppercase tracking-wider text-zinc-700">
+          <div class="p-3 border-r border-zinc-200">Hora</div>
+          <div class="p-3 border-r border-zinc-200">Seg 14</div>
+          <div class="p-3 border-r border-zinc-200">Ter 15</div>
+          <div class="p-3 border-r border-zinc-200">Qua 16</div>
+          <div class="p-3 border-r border-zinc-200">Qui 17</div>
+          <div class="p-3 border-r border-zinc-200">Sex 18</div>
+          <div class="p-3 border-r border-zinc-200">Sáb 19</div>
+          <div class="p-3">Dom 20</div>
+        </div>
+
+        <!-- Linhas de Horário -->
+        <div class="divide-y divide-zinc-200 text-xs">
+
+          <!-- Bloco: 17:00 - 18:30 -->
+          <div class="grid grid-cols-8 min-h-[60px]">
+            <div class="p-2 border-r border-zinc-200 bg-zinc-50 font-semibold text-zinc-500 flex items-center justify-center">17:00</div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1"></div>
+          </div>
+
+          <!-- Bloco: 18:30 - 20:00 -->
+          <div class="grid grid-cols-8 min-h-[75px]">
+            <div class="p-2 border-r border-zinc-200 bg-zinc-50 font-semibold text-zinc-500 flex items-center justify-center">18:30</div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            
+            <!-- Exemplo de Marcação Terça -->
+            <div class="p-1 border-r border-zinc-200">
+              <div class="bg-black text-white p-2 h-full rounded-xs flex flex-col justify-between">
+                <div>
+                  <span class="font-bold block text-[11px]">Iniciadas B</span>
+                  <span class="text-[10px] text-zinc-300 block">Carlos Santos</span>
+                </div>
+                <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-semibold">Académicos</span>
+              </div>
+            </div>
+
+            <div class="p-1 border-r border-zinc-200"></div>
+            
+            <!-- Exemplo Quinta -->
+            <div class="p-1 border-r border-zinc-200">
+              <div class="bg-black text-white p-2 h-full rounded-xs flex flex-col justify-between">
+                <div>
+                  <span class="font-bold block text-[11px]">Iniciadas B</span>
+                  <span class="text-[10px] text-zinc-300 block">Carlos Santos</span>
+                </div>
+                <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-semibold">Académicos</span>
+              </div>
+            </div>
+
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1"></div>
+          </div>
+
+          <!-- Bloco: 20:00 - 21:30 -->
+          <div class="grid grid-cols-8 min-h-[75px]">
+            <div class="p-2 border-r border-zinc-200 bg-zinc-50 font-semibold text-zinc-500 flex items-center justify-center">20:00</div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            
+            <!-- Exemplo Quarta - Freguesia -->
+            <div class="p-1 border-r border-zinc-200">
+              <div class="bg-zinc-700 text-white p-2 h-full rounded-xs flex flex-col justify-between border-l-2 border-zinc-400">
+                <div>
+                  <span class="font-bold block text-[11px]">Atividade Comunitária</span>
+                  <span class="text-[10px] text-zinc-300 block">Resp: Freguesia</span>
+                </div>
+                <span class="text-[9px] uppercase tracking-wider text-zinc-300 font-semibold">Freguesia</span>
+              </div>
+            </div>
+
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1"></div>
+          </div>
+
+          <!-- Bloco: 21:30 - 23:00 -->
+          <div class="grid grid-cols-8 min-h-[60px]">
+            <div class="p-2 border-r border-zinc-200 bg-zinc-50 font-semibold text-zinc-500 flex items-center justify-center">21:30</div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1 border-r border-zinc-200"></div>
+            
+            <!-- Exemplo Sexta -->
+            <div class="p-1 border-r border-zinc-200">
+              <div class="bg-black text-white p-2 h-full rounded-xs flex flex-col justify-between">
+                <div>
+                  <span class="font-bold block text-[11px]">Veteranos</span>
+                  <span class="text-[10px] text-zinc-300 block">Treino Livre</span>
+                </div>
+                <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-semibold">Académicos</span>
+              </div>
+            </div>
+
+            <div class="p-1 border-r border-zinc-200"></div>
+            <div class="p-1"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA EM LISTA / CRONOGRAMA (EXCLUSIVA PARA TELEMÓVEL) -->
+    <div class="block md:hidden space-y-4">
+      <div class="text-xs font-bold uppercase tracking-wider border-b border-black pb-1">
+        Ocupação de Hoje (Terça-feira)
+      </div>
+
+      <!-- Item Cronograma -->
+      <div class="border border-zinc-200 p-3 space-y-2">
+        <div class="flex justify-between items-center border-b border-zinc-100 pb-2">
+          <span class="font-bold text-xs bg-zinc-100 px-2 py-0.5 border border-zinc-200">18:30 - 20:00</span>
+          <span class="text-[10px] bg-black text-white px-2 py-0.5 uppercase font-bold tracking-wider">Académicos</span>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm">Iniciadas B</h4>
+          <p class="text-xs text-zinc-500">Treinador: Carlos Santos</p>
+        </div>
+      </div>
+
+      <div class="border border-zinc-200 p-3 space-y-2">
+        <div class="flex justify-between items-center border-b border-zinc-100 pb-2">
+          <span class="font-bold text-xs bg-zinc-100 px-2 py-0.5 border border-zinc-200">20:00 - 21:30</span>
+          <span class="text-[10px] bg-zinc-700 text-white px-2 py-0.5 uppercase font-bold tracking-wider">Freguesia</span>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm">Atividade Comunitária</h4>
+          <p class="text-xs text-zinc-500">Responsável: Junta de Freguesia</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function mudarSemana(direcao) {
+      // Função reservada para navegar entre as semanas quando ligado ao banco de dados
+      console.log("Navegar semana: ", direcao);
+    }
+    function irParaHoje() {
+      console.log("Voltar para a semana atual");
+    }
+  </script>
+</body>
+</html>
