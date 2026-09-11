@@ -28,7 +28,7 @@
   <div id="login-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-4">
     <div class="border border-black p-6 w-full max-w-sm space-y-4 shadow-xl">
       <div class="flex items-center gap-3">
-        <img src="logo.png" alt="Logo FCA" class="h-10 w-auto object-contain">
+        <img src="logo.png" alt="Logo FCA" class="h-10 w-auto object-contain" onerror="this.style.display='none'">
         <div>
           <h2 class="font-bold text-xs uppercase tracking-wider">Acesso Restrito</h2>
           <span class="text-[10px] text-zinc-500 font-medium block">Ginásio - FCA Os Académicos</span>
@@ -50,7 +50,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
           <div class="flex items-center gap-4">
-            <img src="logo.png" alt="Logo FCA Os Académicos" class="h-12 w-auto object-contain">
+            <img src="logo.png" alt="Logo FCA Os Académicos" class="h-12 w-auto object-contain" onerror="this.style.display='none'">
             <div>
               <span class="font-bold text-lg sm:text-xl tracking-tight uppercase block leading-none">GINÁSIO - FCA OS ACADÉMICOS</span>
               <span class="text-xs text-zinc-400 uppercase tracking-wider font-semibold mt-1 block">GESTÃO 2026/2027</span>
@@ -69,32 +69,67 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-      <!-- CADASTRO RÁPIDO & TABELA -->
       <section class="space-y-6">
+        <!-- TÍTULO E BOTÃO PRINCIPAL -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-100 pb-4">
           <div>
             <h1 class="text-xl font-bold tracking-tight">Marcações do Ginásio</h1>
-            <p class="text-xs text-zinc-500">Consulte e adicione novos horários de utilização do recinto.</p>
+            <p class="text-xs text-zinc-500">Gira os horários de utilização do recinto de forma estruturada.</p>
           </div>
           <button onclick="toggleModalMarcacao(true)" class="w-full sm:w-auto bg-black text-white text-xs font-semibold uppercase tracking-wider px-4 py-2.5 hover:bg-zinc-800 transition-all">
             + Nova Marcação
           </button>
         </div>
 
+        <!-- BARRA DE AGRUPAMENTO, FILTROS E PESQUISA -->
+        <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 bg-zinc-50 p-3 border border-zinc-200">
+          
+          <!-- Filtros de Período (Semana, Mês, Ano, Todos) -->
+          <div class="flex items-center gap-1">
+            <span class="text-[10px] font-bold uppercase text-zinc-500 mr-1">Exibir:</span>
+            <button onclick="definirFiltroPeriodo('todas')" id="btn-periodo-todas" class="btn-periodo bg-black text-white px-2.5 py-1 text-xs font-medium">Todas</button>
+            <button onclick="definirFiltroPeriodo('semana')" id="btn-periodo-semana" class="btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium">Esta Semana</button>
+            <button onclick="definirFiltroPeriodo('mes')" id="btn-periodo-mes" class="btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium">Este Mês</button>
+            <button onclick="definirFiltroPeriodo('ano')" id="btn-periodo-ano" class="btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium">Este Ano</button>
+          </div>
+
+          <!-- Campo de Pesquisa em Tempo Real -->
+          <div class="flex-1 max-w-sm">
+            <input type="text" id="input-busca" oninput="filtrarEExibirMarcacoes()" placeholder="Pesquisar por nome, data ou hora..." class="w-full bg-white border border-zinc-300 px-3 py-1.5 text-xs focus:outline-none focus:border-black">
+          </div>
+        </div>
+
+        <!-- BARRA DE AÇÕES EM MASSA -->
+        <div class="flex flex-wrap justify-between items-center gap-2 bg-zinc-100 p-2.5 border border-zinc-200 text-xs">
+          <div class="flex items-center gap-2">
+            <span id="contador-selecionados" class="font-semibold text-zinc-600">0 selecionados</span>
+            <button id="btn-apagar-selecionados" onclick="deletarSelecionados()" class="hidden bg-red-600 text-white px-2.5 py-1 font-semibold text-[11px] hover:bg-red-700">
+              🗑 Apagar Selecionados
+            </button>
+          </div>
+          <button onclick="deletarTodos()" class="text-zinc-500 hover:text-red-600 font-medium text-xs underline">
+            Apagar Todos os Registos
+          </button>
+        </div>
+
+        <!-- TABELA DE MARCAÇÕES -->
         <div class="border border-zinc-200 overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead class="bg-zinc-100 text-zinc-700 uppercase font-semibold border-b border-zinc-200">
                 <tr>
+                  <th class="p-3 w-8">
+                    <input type="checkbox" id="check-todos" onchange="toggleSelecionarTodos(this.checked)" class="cursor-pointer">
+                  </th>
                   <th class="p-3">Data</th>
                   <th class="p-3">Horário</th>
-                  <th class="p-3">Nome do Responsável</th>
+                  <th class="p-3">Nome / Responsável</th>
                   <th class="p-3">Vínculo</th>
                   <th class="p-3 text-right">Ação</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-zinc-200" id="tabela-marcacoes">
-                <tr><td colspan="5" class="p-4 text-center text-zinc-400">A carregar marcações...</td></tr>
+                <tr><td colspan="6" class="p-4 text-center text-zinc-400">A carregar marcações...</td></tr>
               </tbody>
             </table>
           </div>
@@ -104,7 +139,7 @@
     </main>
   </div>
 
-  <!-- MODAL: NOVA MARCAÇÃO COM SUPORTE A INTERVALO DE DATAS -->
+  <!-- MODAL: NOVA MARCAÇÃO -->
   <div id="modal-marcacao" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-white border border-black w-full max-w-md p-6 space-y-4 shadow-2xl">
       <div class="flex justify-between items-center border-b border-zinc-200 pb-3">
@@ -209,7 +244,10 @@
     const db = getFirestore(app);
     const marcacoesRef = collection(db, "marcacoes");
 
-    // CADASTRAR MARCAÇÃO COM SUPORTE A INTERVALO DE DATAS
+    let todadAsMarcacoes = [];
+    let filtroPeriodoAtual = 'todas';
+
+    // CADASTRAR MARCAÇÃO COM INTERVALO DE DATAS
     document.getElementById('form-marcacao').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -223,7 +261,6 @@
       let dataAtual = new Date(dataInicioStr);
       let dataFim = dataFimStr ? new Date(dataFimStr) : new Date(dataInicioStr);
 
-      // Percorre todos os dias entre Data Início e Data Fim e regista individualmente
       while (dataAtual <= dataFim) {
         const dataFormatada = dataAtual.toISOString().split('T')[0];
         
@@ -235,7 +272,6 @@
           vinculo: vinculo
         });
 
-        // Avança 1 dia
         dataAtual.setDate(dataAtual.getDate() + 1);
       }
 
@@ -243,29 +279,133 @@
       toggleModalMarcacao(false);
     });
 
-    // LISTAR MARCAÇÕES EM TEMPO REAL
+    // CARREGAR DADOS DO FIREBASE
     const qMarcacoes = query(marcacoesRef, orderBy("data", "asc"));
     onSnapshot(qMarcacoes, (snapshot) => {
+      todadAsMarcacoes = snapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }));
+      filtrarEExibirMarcacoes();
+    });
+
+    // DEFINIR FILTRO DE PERÍODO (TODAS, SEMANA, MÊS, ANO)
+    window.definirFiltroPeriodo = function(periodo) {
+      filtroPeriodoAtual = periodo;
+      
+      document.querySelectorAll('.btn-periodo').forEach(btn => {
+        btn.className = 'btn-periodo bg-white border border-zinc-300 text-zinc-700 hover:border-black px-2.5 py-1 text-xs font-medium';
+      });
+
+      const btnAtivo = document.getElementById(`btn-periodo-${periodo}`);
+      if (btnAtivo) {
+        btnAtivo.className = 'btn-periodo bg-black text-white px-2.5 py-1 text-xs font-medium';
+      }
+
+      filtrarEExibirMarcacoes();
+    };
+
+    // FILTRAR E EXIBIR TABELA
+    window.filtrarEExibirMarcacoes = function() {
+      const termoBusca = document.getElementById('input-busca').value.toLowerCase();
+      const hoje = new Date();
+
+      let filtradas = todadAsMarcacoes.filter(m => {
+        // Filtro de Busca (Nome, Data ou Hora)
+        const matchBusca = m.nome.toLowerCase().includes(termoBusca) ||
+                           m.data.includes(termoBusca) ||
+                           m.horaInicio.includes(termoBusca) ||
+                           m.horaFim.includes(termoBusca);
+
+        if (!matchBusca) return false;
+
+        // Filtro de Período
+        const dataItem = new Date(m.data + 'T00:00:00');
+        if (filtroPeriodoAtual === 'semana') {
+          const inicioSemana = new Date(hoje);
+          inicioSemana.setDate(hoje.getDate() - hoje.getDay());
+          const fimSemana = new Date(inicioSemana);
+          fimSemana.setDate(inicioSemana.getDate() + 6);
+          return dataItem >= inicioSemana && dataItem <= fimSemana;
+        } else if (filtroPeriodoAtual === 'mes') {
+          return dataItem.getMonth() === hoje.getMonth() && dataItem.getFullYear() === hoje.getFullYear();
+        } else if (filtroPeriodoAtual === 'ano') {
+          return dataItem.getFullYear() === hoje.getFullYear();
+        }
+
+        return true;
+      });
+
+      renderizarTabela(filtradas);
+    };
+
+    // RENDERIZAR LINHAS DA TABELA
+    function renderizarTabela(lista) {
       const tabela = document.getElementById('tabela-marcacoes');
       tabela.innerHTML = '';
-      if (snapshot.empty) {
-        tabela.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-zinc-400">Nenhuma marcação registada.</td></tr>';
+      document.getElementById('check-todos').checked = false;
+      atualizarContadorSelecionados();
+
+      if (lista.length === 0) {
+        tabela.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-zinc-400">Nenhuma marcação encontrada.</td></tr>';
         return;
       }
-      snapshot.docs.forEach(docSnap => {
-        const m = docSnap.data();
-        const id = docSnap.id;
+
+      lista.forEach(m => {
         tabela.innerHTML += `
           <tr class="hover:bg-zinc-50 transition-colors">
+            <td class="p-3">
+              <input type="checkbox" value="${m.id}" onchange="atualizarContadorSelecionados()" class="check-item cursor-pointer">
+            </td>
             <td class="p-3 font-medium">${m.data}</td>
             <td class="p-3 font-semibold text-zinc-900">${m.horaInicio} às ${m.horaFim}</td>
             <td class="p-3 font-semibold">${m.nome}</td>
             <td class="p-3"><span class="${m.vinculo === 'academicos' ? 'bg-black text-white' : 'bg-zinc-200 text-zinc-800'} px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">${m.vinculo}</span></td>
-            <td class="p-3 text-right"><button onclick="deletarMarcacao('${id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Cancelar</button></td>
+            <td class="p-3 text-right"><button onclick="deletarMarcacao('${m.id}')" class="text-zinc-400 hover:text-black font-semibold text-xs">Cancelar</button></td>
           </tr>
         `;
       });
-    });
+    }
+
+    // SELECIONAR TODOS / DESSELECIONAR TODOS
+    window.toggleSelecionarTodos = function(status) {
+      document.querySelectorAll('.check-item').forEach(chk => chk.checked = status);
+      atualizarContadorSelecionados();
+    };
+
+    // ATUALIZAR CONTADOR E BOTÃO DE APAGAR SELECIONADOS
+    window.atualizarContadorSelecionados = function() {
+      const selecionados = document.querySelectorAll('.check-item:checked');
+      const qtd = selecionados.length;
+      document.getElementById('contador-selecionados').innerText = `${qtd} selecionado(s)`;
+
+      const btnApagar = document.getElementById('btn-apagar-selecionados');
+      if (qtd > 0) btnApagar.classList.remove('hidden');
+      else btnApagar.classList.add('hidden');
+    };
+
+    // APAGAR APENAS OS SELECIONADOS
+    window.deletarSelecionados = async function() {
+      const selecionados = document.querySelectorAll('.check-item:checked');
+      if (selecionados.length === 0) return;
+
+      if (confirm(`Tem a certeza que deseja apagar os ${selecionados.length} registos selecionados?`)) {
+        for (let chk of selecionados) {
+          await deleteDoc(doc(db, "marcacoes", chk.value));
+        }
+      }
+    };
+
+    // APAGAR TODOS OS REGISTOS
+    window.deletarTodos = async function() {
+      if (todadAsMarcacoes.length === 0) return alert("Não existem registos para apagar.");
+      
+      if (confirm("ATENÇÃO: Deseja apagar TODOS os registos de marcações da base de dados? Esta ação não pode ser desfeita.")) {
+        for (let m of todadAsMarcacoes) {
+          await deleteDoc(doc(db, "marcacoes", m.id));
+        }
+      }
+    };
 
     window.deletarMarcacao = async (id) => { 
       if (confirm("Cancelar esta marcação?")) await deleteDoc(doc(db, "marcacoes", id)); 
